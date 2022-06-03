@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bi/env python3
 # -*- coding: utf-8 -*-
 """
 Created on Thu Jun  2 21:59:53 2022
@@ -6,7 +6,6 @@ Created on Thu Jun  2 21:59:53 2022
 @author: hakyungsung
 """
 
-import glob
 
 def jaccad_similarity(sent1, sent2):
 	s1 = set(sent1.split())
@@ -22,17 +21,28 @@ def jaccad_similarity_mod(sent1, sent2):
 	except ZeroDivisionError:
 		pass
 
-filePointer1 = open('TD_fina.txt','r') # get the .cha file of interest
+def n_gram (sent1, sent2):
+	s1 = set(sent1.split())
+	s2 = set(sent2.split())
+	return len(s1.intersection(s2))
+
+filePointer1 = open('TD_0603_b.txt','r') # get the .cha file of interest
 fileContent1 = filePointer1.read() # get the contents of the file
 fileLines1 = fileContent1.split('\n') # let's extract the lines into an array
 print(fileLines1)
-filePointer2 = open('TD_fina_b.txt','r') # get the .cha file of interest
+filePointer2 = open('TD_0603_a.txt','r') # get the .cha file of interest
 fileContent2 = filePointer2.read() # get the contents of the file
 fileLines2 = fileContent2.split('\n') # let's extract the lines into an array
 print(fileLines2)
 
-def test():
-	output = open('test_result_2.txt','w')
+filePointer3 = open('data.txt','r')
+fileContent3 = filePointer3.read()
+fileLines3 = fileContent3.split('\n')
+print(fileLines3)
+
+
+def test(filename):
+	output = open(filename+'.txt','w')
 	for line1, line2 in zip(fileLines1, fileLines2):
 		sent1 = line1
 		sent2 = line2
@@ -42,8 +52,8 @@ def test():
 	output.close()
 
 
-def test_mod():
-	output = open('test_result_ver1_td.txt','w')
+def test_mod(filename):
+	output = open(filename+'.txt','w')
 	for line1, line2 in zip(fileLines1, fileLines2):
 		sent1 = line1
 		sent2 = line2
@@ -52,14 +62,44 @@ def test_mod():
 	output.flush()
 	output.close()
 
-def cal():
+def test_sum(filename):
+	output = open(filename+'.txt','w')
+	for line1 in fileLines1:
+		for line2 in fileLines2:
+			sent1=line1
+			sent2=line2
+			a = jaccad_similarity(sent1, sent2)
+			b = jaccad_similarity_mod(sent1, sent2)
+			output.write(sent1+'\t'+sent2+'\t'+str(a)+'\t'+str(b)+'\n') # print the word to the output file; add a return character
+	output.flush()
+	output.close()
+	
+def quick_analysis(filename):
+	output = open(filename+'.txt','w')
+	for line3 in fileLines3:
+		sent3=line3
+		c = len(sent3.split())
+		d = len(set(sent3.split()))
+		print(c,d)
+		output.write(sent3+'\t'+str(c)+'\t'+str(d)+'\n')
+	output.flush()
+	output.close()	
+	
+def n_gram_cal(filename):
+	output = open(filename+'.txt','w')
 	for line1, line2 in zip(fileLines1, fileLines2):
 		sent1 = line1
 		sent2 = line2
-		a = jaccad_similarity(sent1, sent2)
-		print(a)
+		e = n_gram(sent1, sent2)
+		output.write(sent1+'\t'+sent2+'\t'+str(e)+'\n') # print the word to the output file; add a return character
+	output.flush()
+	output.close()
+	
+	
+test('result_ASD_0603_a')
+test_mod('result_ASD_0603_b')
+test_sum('test_test')
+quick_analysis('quick2')
 
-test()
-test_mod()
-cal()
-
+n_gram_cal('result_ASD_n_gram')
+n_gram_cal('result_TD_n_gram')
