@@ -17,20 +17,20 @@ def jaccad_similarity_mod(sent1, sent2):
 	s1 = set(sent1.split())
 	s2 = set(sent2.split())
 	try: 
-		return float(len(s2)/len(s1.intersection(s2)))
+		return float(len(s1)/len(s1.intersection(s2)))
 	except ZeroDivisionError:
-		pass
+		return 0
 
 def n_gram (sent1, sent2):
 	s1 = set(sent1.split())
 	s2 = set(sent2.split())
 	return len(s1.intersection(s2))
 
-filePointer1 = open('TD_0603_b.txt','r') # get the .cha file of interest
+filePointer1 = open('ASD_132_child.txt','r') # get the .cha file of interest
 fileContent1 = filePointer1.read() # get the contents of the file
 fileLines1 = fileContent1.split('\n') # let's extract the lines into an array
 print(fileLines1)
-filePointer2 = open('TD_0603_a.txt','r') # get the .cha file of interest
+filePointer2 = open('ASD_132_child.txt','r') # get the .cha file of interest
 fileContent2 = filePointer2.read() # get the contents of the file
 fileLines2 = fileContent2.split('\n') # let's extract the lines into an array
 print(fileLines2)
@@ -71,6 +71,8 @@ def test_sum(filename):
 			a = jaccad_similarity(sent1, sent2)
 			b = jaccad_similarity_mod(sent1, sent2)
 			output.write(sent1+'\t'+sent2+'\t'+str(a)+'\t'+str(b)+'\n') # print the word to the output file; add a return character
+			if sent1 == sent2:
+				break
 	output.flush()
 	output.close()
 	
@@ -98,7 +100,7 @@ def n_gram_cal(filename):
 	
 test('result_ASD_0603_a')
 test_mod('result_ASD_0603_b')
-test_sum('test_test')
+test_sum('test_ASD_132_2')
 quick_analysis('quick2')
 
 n_gram_cal('result_ASD_n_gram')
